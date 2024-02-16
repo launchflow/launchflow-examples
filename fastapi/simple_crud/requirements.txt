@@ -1,0 +1,6 @@
+launchflow[gcp]
+sqlalchemy
+fastapi
+uvicorn
+python-multipart
+pg8000
