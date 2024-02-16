@@ -1,8 +1,6 @@
 <div align="center">
 
-<img src="https://storage.googleapis.com/launchflow-public-images/launchflow-logo.png#gh-light-mode-only" alt="LaunchFlow Logo">
-<img src="https://storage.googleapis.com/launchflow-public-images/launchflow-logo-dark.png#gh-dark-mode-only" alt="LaunchFlow Logo">
-
+<img src="https://storage.googleapis.com/launchflow-public-images/launchflow-logo.png" alt="LaunchFlow Logo">
 <hr>
 
 ### **🚀 Python-native infrastructure for the cloud 🚀⚒️**
