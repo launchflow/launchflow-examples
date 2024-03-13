@@ -1,5 +1,5 @@
+project: tanke-gcp
 environment: dev
-project: caleb
 services:
   - name: fastapi-service
     product: gcp_cloud_run

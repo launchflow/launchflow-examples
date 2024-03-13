@@ -1,13 +1,14 @@
 import asyncio
-import launchflow as lf
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends, HTTPException, UploadFile, Response
-from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, AsyncSession
-from sqlalchemy import select
-from google.cloud import storage
-from app.infra import gcs_bucket, pg, redis, redis_vm
-from app.models import Base, User
 
+import redis
+from fastapi import Depends, FastAPI, HTTPException, Response, UploadFile
+from google.cloud import storage
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
+
+from app.infra import gcs_bucket, pg, redis_cluster, redis_vm
+from app.models import Base, User
 
 pool = None
 SessionLocal = None
@@ -39,7 +40,7 @@ async def lifespan(app: FastAPI):
     await asyncio.gather(
         gcs_bucket.connect_async(),
         redis_vm.connect_async(),
-        redis.connect_async(),
+        redis_cluster.connect_async(),
         pg.connect_async(),
     )
     await init_db()
@@ -49,13 +50,13 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
-@app.get("/")
+@app.get("/users")
 async def list_users(db: AsyncSession = Depends(get_db)):
     users = await db.execute(select(User)).scalars().all()
     return {"users": [u.__dict__ for u in users]}
 
 
-@app.post("/")
+@app.post("/users")
 async def create_user(
     name: str,
     photo: UploadFile,
@@ -70,7 +71,7 @@ async def create_user(
     return user.__dict__
 
 
-@app.get("/{user_id}")
+@app.get("/users/{user_id}")
 async def get_user(
     user_id: int,
     db: AsyncSession = Depends(get_db),
@@ -86,7 +87,7 @@ async def get_user(
     )
 
 
-@app.put("/{user_id}")
+@app.put("/users/{user_id}")
 async def update_user(
     user_id: int,
     name: str,
@@ -106,7 +107,7 @@ async def update_user(
     return user.__dict__
 
 
-@app.delete("/{user_id}")
+@app.delete("/users/{user_id}")
 async def delete_user(
     user_id: int,
     db: AsyncSession = Depends(get_db),
@@ -119,3 +120,39 @@ async def delete_user(
     await db.commit()
     bucket.delete_blob(f"users/{user.id}/{user.photo}")
     return "success"
+
+
+@app.get("/test_db")
+async def test_db(db: AsyncSession = Depends(get_db)):
+    # create a test user in the db then query it back
+    user = User(name="test", photo="test.jpg")
+    db.add(user)
+    await db.commit()
+    user = await db.get(User, user.id)
+    return {
+        "id": user.id,
+        "name": user.name,
+        "photo": user.photo,
+    }
+
+
+@app.get("/test_redis")
+async def test_redis(redis_client: redis.Redis = Depends(redis_cluster.redis_async)):
+    # set a key in redis and read it back
+    await redis_client.set("test", "test")
+    return await redis_client.get("test")
+
+
+@app.get("/test_redis_vm")
+async def test_redis_vm(redis_client: redis.Redis = Depends(redis_vm.redis_async)):
+    # set a key in redis and read it back
+    await redis_client.set("test", "test")
+    return await redis_client.get("test")
+
+
+@app.get("/test_gcs")
+async def test_gcs(bucket: storage.Bucket = Depends(gcs_bucket.bucket)):
+    # create a test file in the gcs bucket then read it back
+    blob = bucket.blob("test.txt")
+    blob.upload_from_string("test")
+    return blob.download_as_text()

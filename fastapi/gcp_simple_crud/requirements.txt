@@ -1,6 +1,8 @@
 fastapi
-launchflow[gcp]==0.3.2.dev3
+launchflow[gcp]==0.3.3.dev18
 pg8000
 redis
 sqlalchemy
 uvicorn
+python-multipart
+asyncpg

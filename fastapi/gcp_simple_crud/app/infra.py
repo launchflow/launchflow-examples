@@ -1,6 +1,5 @@
 import launchflow as lf
 
-
 # Docs: https://docs.launchflow.com/reference/gcp-resources/cloud-sql
 pg = lf.gcp.CloudSQLPostgres("caleb-postgres3")
 
@@ -11,4 +10,4 @@ gcs_bucket = lf.gcp.GCSBucket("caleb-bucket-unique-bucket-asdf")
 redis_vm = lf.gcp.ComputeEngineRedis("caleb-redis-vm")
 
 # Docs: https://docs.launchflow.com/reference/gcp-resources/memorystore
-redis = lf.gcp.MemorystoreRedis("caleb-redis3")
+redis_cluster = lf.gcp.MemorystoreRedis("caleb-redis3")
