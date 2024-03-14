@@ -1,5 +1,9 @@
 environment: dev
 project: caleb
 services:
-  - name: fastapi-service
+  - name: fastapi-service3
+    product: gcp_cloud_run
+  - name: fastapi-service2
+    product: gcp_cloud_run
+  - name: fastapi-service1
     product: gcp_cloud_run

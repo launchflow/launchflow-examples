@@ -2,6 +2,7 @@ fastapi
 launchflow[gcp]==0.3.2.dev5
 pg8000
 redis
-sqlalchemy
+sqlalchemy[asyncio]
 uvicorn
 python-multipart
+asyncpg
