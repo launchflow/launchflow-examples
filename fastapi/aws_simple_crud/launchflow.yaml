@@ -1,5 +1,5 @@
-project: caleb-aws
-environment: prod4
+project: launchflow-examples
+environment: dev
 services:
   - name: fastapi-service
     product: gcp_cloud_run

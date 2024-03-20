@@ -1,5 +1,5 @@
+project: launchflow-examples
 environment: dev
-project: caleb-gcp-testing
 services:
   - name: fastapi-service
     product: gcp_cloud_run
