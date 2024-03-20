@@ -1,0 +1,5 @@
+environment: dev
+project: caleb-aws
+services:
+  - name: fastapi-service2
+    product: aws_ecs_fargate

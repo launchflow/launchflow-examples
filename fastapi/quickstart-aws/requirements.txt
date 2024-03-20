@@ -1,0 +1,3 @@
+fastapi
+launchflow[aws]==0.3.3.dev22
+uvicorn

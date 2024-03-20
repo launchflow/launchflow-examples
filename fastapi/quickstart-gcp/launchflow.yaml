@@ -1,5 +1,5 @@
 environment: dev
-project: caleb
+project: caleb-gcp-testing
 services:
-  - name: fastapi-service3
+  - name: fastapi-service
     product: gcp_cloud_run

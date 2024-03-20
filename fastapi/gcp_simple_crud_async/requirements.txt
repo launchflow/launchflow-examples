@@ -1,5 +1,5 @@
 fastapi
-launchflow[gcp]==0.3.2.dev5
+launchflow[gcp]
 pg8000
 redis
 sqlalchemy[asyncio]
