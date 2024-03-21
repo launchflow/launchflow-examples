@@ -2,13 +2,13 @@ import asyncio
 from contextlib import asynccontextmanager
 
 import redis
-from fastapi import Depends, FastAPI, HTTPException, Response, UploadFile
+from app.infra import gcs_bucket, pg, redis_vm
+from app.models import Base, User
 from google.cloud import storage
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
-from app.infra import gcs_bucket, pg, redis_cluster, redis_vm
-from app.models import Base, User
+from fastapi import Depends, FastAPI, HTTPException, Response, UploadFile
 
 pool = None
 SessionLocal = None
@@ -39,11 +39,10 @@ async def get_db():
 async def lifespan(app: FastAPI):
     await asyncio.gather(
         gcs_bucket.connect_async(),
-        redis_vm.connect_async(),
-        redis_cluster.connect_async(),
-        pg.connect_async(),
+        # redis_vm.connect_async(),
+        # pg.connect_async(),
     )
-    await init_db()
+    # await init_db()
     yield
 
 
@@ -134,13 +133,6 @@ async def test_db(db: AsyncSession = Depends(get_db)):
         "name": user.name,
         "photo": user.photo,
     }
-
-
-@app.get("/test_redis")
-async def test_redis(redis_client: redis.Redis = Depends(redis_cluster.redis_async)):
-    # set a key in redis and read it back
-    await redis_client.set("test", "test")
-    return await redis_client.get("test")
 
 
 @app.get("/test_redis_vm")

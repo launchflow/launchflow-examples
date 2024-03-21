@@ -10,4 +10,4 @@ gcs_bucket = lf.gcp.GCSBucket("caleb-bucket-unique-bucket-asdf")
 redis_vm = lf.gcp.ComputeEngineRedis("caleb-redis-vm")
 
 # Docs: https://docs.launchflow.com/reference/gcp-resources/memorystore
-redis_cluster = lf.gcp.MemorystoreRedis("caleb-redis3")
+# redis_cluster = lf.gcp.MemorystoreRedis("caleb-redis3")
