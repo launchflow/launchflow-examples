@@ -1,6 +1,6 @@
 Flask
 Flask-SQLAlchemy
 gunicorn
-launchflow[gcp]==0.3.4.dev1
+launchflow[aws]
 pg8000
 sqlalchemy
