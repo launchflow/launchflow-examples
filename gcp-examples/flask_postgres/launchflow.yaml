@@ -1,0 +1,5 @@
+project: gcp-examples
+environment: dev
+services:
+  - name: flask-service
+    product: gcp_cloud_run

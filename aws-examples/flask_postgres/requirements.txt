@@ -1,0 +1,6 @@
+Flask
+Flask-SQLAlchemy
+gunicorn
+launchflow[aws]
+pg8000
+sqlalchemy

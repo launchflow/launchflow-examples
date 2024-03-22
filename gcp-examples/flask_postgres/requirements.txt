@@ -1,0 +1,6 @@
+Flask
+Flask-SQLAlchemy
+gunicorn
+launchflow[gcp]==0.3.4.dev0
+pg8000
+sqlalchemy

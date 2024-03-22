@@ -1,8 +1,0 @@
-fastapi
-launchflow[gcp]
-pg8000
-redis
-sqlalchemy[asyncio]
-uvicorn
-python-multipart
-asyncpg

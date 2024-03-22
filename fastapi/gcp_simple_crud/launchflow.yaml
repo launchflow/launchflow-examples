@@ -1,5 +1,0 @@
-project: launchflow-examples
-environment: dev
-services:
-  - name: gcp-simple-crud
-    product: gcp_cloud_run

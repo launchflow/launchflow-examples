@@ -1,5 +1,0 @@
-project: launchflow-examples
-environment: dev
-services:
-  - name: fastapi-service3
-    product: gcp_cloud_run
