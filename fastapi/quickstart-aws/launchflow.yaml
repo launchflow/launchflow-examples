@@ -1,5 +1,0 @@
-project: launchflow-examples
-environment: dev
-services:
-  - name: fastapi-service2
-    product: aws_ecs_fargate

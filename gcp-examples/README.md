@@ -9,4 +9,4 @@
 
 </div>
 
-This repository hold different samples for using LaunchFlow with different resources, cloud providers, and frameworks. You can find additional guides and walkthroughs on the [LaunchFlow documentation](https://docs.launchflow.com/).
+This repository hold different examples for using LaunchFlow with Google Cloud Platform (GCP). You can find additional guides and walkthroughs on the [LaunchFlow documentation](https://docs.launchflow.com/).
