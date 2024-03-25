@@ -1,23 +1,35 @@
 import google.auth
 import psycopg2
+from google.auth import impersonated_credentials
 from google.auth.transport.requests import Request
 
 # initialize ADC creds
-creds, _ = google.auth.default(
+source_credentials, _ = google.auth.default(
     scopes=["https://www.googleapis.com/auth/sqlservice.login"]
 )
 
-# refresh credentials if expired (manage this code in your application)
-request = Request()
-creds.refresh(request)
+
+target_credentials = impersonated_credentials.Credentials(
+    source_credentials=source_credentials,
+    target_principal="**********@**********.iam.gserviceaccount.com",
+    delegates=[],
+    lifetime=3600,
+    target_scopes=["https://www.googleapis.com/auth/sqlservice.login"],
+)
+refresh_request = Request()
+target_credentials.refresh(refresh_request)
 
 
-# Cloud SQL Instance IP address
-instance_ip = "34.71.50.100"
+# Cloud SQL Public Instance IP address
+instance_ip = "**.**.**.***"
 
 # interact with Cloud SQL database using psycopg2 connection
 with psycopg2.connect(
-    f"dbname=launchflow-sample-db-db user=launchflow@gcp-examples-dev-9472.iam password={str(creds.token)} host={instance_ip} sslmode=require sslrootcert=server-ca.pem sslcert=client-cert.pem sslkey=client-key.pem"
+    dbname="postgres",
+    user="**********@**********.iam",
+    password=str(target_credentials.token),
+    host=instance_ip,
+    port="5432",
 ) as con:
     with con.cursor() as cur:
         cur.execute("SELECT * FROM test.table")
