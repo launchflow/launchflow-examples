@@ -1,4 +1,4 @@
-project: gcp-examples
+project: launchflow-examples-gcp
 environment: dev
 services:
   - name: fastapi-service

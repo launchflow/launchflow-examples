@@ -36,11 +36,11 @@ ENV PATH="${PATH}:/usr/local/lib/python3.11/site-packages/bin"
 
 # Set the working directory and copy only the necessary application files
 WORKDIR /code
-COPY --chown=appuser:appuser ./fastapi_app /code/fastapi_app
+COPY --chown=appuser:appuser ./app /code/app
 COPY --chown=appuser:appuser ./launchflow.yaml /code/launchflow.yaml
 
 # Expose the port the app runs on
 EXPOSE $PORT
 
 # Start the application
-CMD uvicorn fastapi_app.main:app --host 0.0.0.0 --port $PORT
+CMD uvicorn app.main:app --host 0.0.0.0 --port $PORT
