@@ -1,5 +1,4 @@
 from contextlib import asynccontextmanager
-import io
 
 from app.infra import bucket
 
