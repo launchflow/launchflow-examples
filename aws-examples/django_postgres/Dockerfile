@@ -2,7 +2,7 @@
 # Learn more at https://docs.docker.com/build/building/multi-stage/
 
 # Build Stage 1: Build stage for installing dependencies
-FROM public.ecr.aws/docker/python:3.11-slim as builder
+FROM public.ecr.aws/docker/library/python:3.11-slim as builder
 
 # Set a working directory for the build stage
 WORKDIR /build
@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir -U pip setuptools wheel \
     && pip install --no-cache-dir --target=/install -r requirements.txt
 
 # Build Stage 2: Build a final slim image for running the application
-FROM public.ecr.aws/docker/python:3.11-slim
+FROM public.ecr.aws/docker/library/python:3.11-slim
 
 # Create a non-root user for security purposes
 RUN useradd --create-home appuser
@@ -36,7 +36,9 @@ ENV PATH="${PATH}:/usr/local/lib/python3.11/site-packages/bin"
 
 # Set the working directory and copy only the necessary application files
 WORKDIR /code
+COPY --chown=appuser:appuser ./manage.py /code/manage.py
 COPY --chown=appuser:appuser ./app /code/app
+COPY --chown=appuser:appuser ./django_postgres /code/django_postgres
 COPY --chown=appuser:appuser ./launchflow.yaml /code/launchflow.yaml
 
 # Expose the port the app runs on
