@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+import io
 
 from app.infra import bucket
 
@@ -16,7 +17,7 @@ app = FastAPI(lifespan=lifespan)
 
 @app.post("/{file_name}")
 async def write_file(file_name: str, file_contents: str):
-    bucket.upload_file(file_contents, file_name)
+    bucket.upload_from_string(file_contents, file_name)
     return "OK"
 
 

@@ -1,4 +1,4 @@
-project: aws-examples
+project: launchflow-examples-aws
 environment: dev
 services:
   - name: fastapi-service
