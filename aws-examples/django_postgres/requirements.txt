@@ -1,7 +1,5 @@
 Django
 djangorestframework
 launchflow[aws]
-redis
-sqlalchemy[asyncio]
 psycopg2-binary
 gunicorn

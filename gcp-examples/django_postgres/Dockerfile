@@ -36,7 +36,9 @@ ENV PATH="${PATH}:/usr/local/lib/python3.11/site-packages/bin"
 
 # Set the working directory and copy only the necessary application files
 WORKDIR /code
+COPY --chown=appuser:appuser ./manage.py /code/manage.py
 COPY --chown=appuser:appuser ./app /code/app
+COPY --chown=appuser:appuser ./django_postgres /code/django_postgres
 COPY --chown=appuser:appuser ./launchflow.yaml /code/launchflow.yaml
 
 # Expose the port the app runs on

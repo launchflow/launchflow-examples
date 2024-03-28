@@ -56,20 +56,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 postgress_connection = postgres.connect()
 
-DATABASES = {
-    "default": {
-        "ENGINE": "cloudsql",
-        "HOST": "34.71.50.100",
-        "USER": "launchflow@gcp-examples-dev-9472.iam",
-        # "PASSWORD": postgress_connection.password,
-        "NAME": postgress_connection.database_name,
-        "OPTIONS": {
-            "gcp_iam_auth": True,
-            "sslmode": "verify-full",
-            "sslrootcert": "server-ca.pem",
-        },
-    },
-}
+DATABASES = {"default": postgres.django_options()}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

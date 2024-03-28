@@ -1,7 +1,5 @@
 Django
 djangorestframework
 launchflow[gcp]
-pg8000
-redis
-sqlalchemy[asyncio]
-asyncpg
+psycopg2-binary
+gunicorn
