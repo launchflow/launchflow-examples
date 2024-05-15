@@ -1,5 +1,5 @@
-project: gcp-examples
+project: oss-testing
 environment: dev
-services:
-  - name: fastapi-service
-    product: gcp_cloud_run
+backend:
+  local:
+    path: lf_state
