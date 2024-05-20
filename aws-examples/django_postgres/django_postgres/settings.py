@@ -54,7 +54,7 @@ WSGI_APPLICATION = "django_postgres.wsgi.application"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-DATABASES = {"default": postgres.django_options()}
+DATABASES = {"default": postgres.django_settings()}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

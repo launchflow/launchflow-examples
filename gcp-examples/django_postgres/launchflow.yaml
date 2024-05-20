@@ -1,5 +1,2 @@
-project: gcp-examples
+project: aws-examples
 environment: dev
-services:
-  - name: django-service
-    product: gcp_cloud_run

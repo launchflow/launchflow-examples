@@ -1,14 +1,36 @@
 import os
 
-from django_postgres.infra import postgres
+import launchflow as lf
+from django_postgres.infra import postgres, storage_bucket
+
+DATABASES = {"default": postgres.django_settings()}
+
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+    },
+}
+AWS_STORAGE_BUCKET_NAME = storage_bucket.connect().bucket_name
+
+
+if lf.is_deployment():
+    print("Running in deployment mode")
+    ALLOWED_HOSTS = ["*"]
+    # TODO(developer): Replace this with your domain
+    CSRF_TRUSTED_ORIGINS = ["http://*.amazonaws.com"]
+else:
+    print("Running in local mode")
+    ALLOWED_HOSTS = ["*"]
+    DEBUG = True
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = "your_secret_key"
-
-DEBUG = True
-
-ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -53,10 +75,6 @@ WSGI_APPLICATION = "django_postgres.wsgi.application"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-postgress_connection = postgres.connect()
-
-DATABASES = {"default": postgres.django_options()}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -1,0 +1,9 @@
+project: gcp-examples
+environment: dev
+services:
+  - name: account-service
+    product: gcp_cloud_run
+    build_directory: account_service
+  - name: ai-service
+    product: gcp_cloud_run
+    build_directory: ai_service

@@ -1,4 +1,13 @@
 import launchflow as lf
+from sqlalchemy import text
 
-# Docs: https://docs.launchflow.com/reference/gcp-resources/cloud-sql
-postgres = lf.gcp.CloudSQLPostgres("launchflow-sample-db")
+postgres = lf.gcp.CloudSQLPostgres("my-database")
+
+postgres_vm = lf.gcp.ComputeEnginePostgres("my-database-vm")
+
+
+if __name__ == "__main__":
+    engine = postgres.sqlalchemy_engine()
+
+    with engine.connect() as connection:
+        print(connection.execute(text("SELECT 1")).fetchone())  # prints (1,)
