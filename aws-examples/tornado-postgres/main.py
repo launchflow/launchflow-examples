@@ -11,9 +11,11 @@ postgres = lf.aws.RDSPostgres("launchflow-example-db")
 
 
 class ExamplePostgresHandler(tornado.web.RequestHandler):
+    # Passes the database connection pool to the request handler
     def initialize(self, db_connection_pool: async_sessionmaker[AsyncSession]):
         self.db_connection_pool = db_connection_pool
 
+    # Queries the database for all users and returns them as JSON
     async def get(self):
         async with self.db_connection_pool() as connection:
             result = await connection.execute(select(StorageUser))
