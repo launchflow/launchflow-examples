@@ -1,0 +1,10 @@
+created_at: '2024-05-22T21:22:15.058723Z'
+updated_at: '2024-05-22T21:22:15.058723Z'
+environment_type: development
+ready: true
+gcp_config:
+  project_id: gcp-examples-local-test
+  default_region: us-central1
+  default_zone: us-central1-a
+  service_account_email: launchflow@gcp-examples-local-test.iam.gserviceaccount.com
+  artifact_bucket: gcp-examples-local-test-artifacts

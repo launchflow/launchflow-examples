@@ -1,5 +1,8 @@
 project: gcp-examples
-environment: dev
+environment: local-test
 services:
   - name: fastapi-service
     product: gcp_cloud_run
+backend:
+  local:
+    path: ".launchflow"
