@@ -3,6 +3,11 @@ environment: local-test
 services:
   - name: fastapi-service
     product: gcp_cloud_run
+    product_configs:
+      local-test:
+        region: us-central1
+        cpu: 1
+
 backend:
   local:
     path: ".launchflow"
