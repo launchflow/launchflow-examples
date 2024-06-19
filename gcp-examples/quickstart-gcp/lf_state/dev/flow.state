@@ -1,9 +1,0 @@
-created_at: '2024-05-15T21:04:45.540109Z'
-updated_at: '2024-05-15T21:04:45.540109Z'
-environment_type: development
-gcp_config:
-  project_id: oss-testing-dev-5796
-  default_region: us-central1
-  default_zone: us-central1-a
-  service_account_email: launchflow@oss-testing-dev-5796.iam.gserviceaccount.com
-  artifact_bucket: oss-testing-dev-artifacts-2423

@@ -8,7 +8,7 @@ from fastapi import FastAPI
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await bucket.connect_async()
+    await bucket.outputs_async()
     yield
 
 
