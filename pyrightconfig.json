@@ -1,0 +1,6 @@
+{
+  "venvPath": "/Users/calebvandyke/.pyenv/versions/3.11.4/envs",
+  "venv": "three11",
+  "extraPaths": ["/Users/calebvandyke/code/launchflow-oss"],
+  "typeCheckingMode": "off"
+}
