@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 import io
 
-from app.infra import bucket, gce_redis
+from app.infra import bucket
 
 from fastapi import FastAPI
 
@@ -9,7 +9,6 @@ from fastapi import FastAPI
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await bucket.outputs_async()
-    await gce_redis.outputs_async()
     yield
 
 
