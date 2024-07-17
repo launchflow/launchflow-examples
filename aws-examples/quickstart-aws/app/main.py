@@ -7,7 +7,7 @@ from fastapi import FastAPI
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await bucket.connect_async()
+    await bucket.outputs_async()
     yield
 
 
@@ -23,3 +23,8 @@ async def write_file(file_name: str, file_contents: str):
 @app.get("/{file_name}")
 async def read_file(file_name: str) -> str:
     return bucket.download_file(file_name).decode("utf-8")
+
+
+@app.get("/")
+async def health_check():
+    return "OK"
