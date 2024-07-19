@@ -1,0 +1,6 @@
+launchflow[gcp]
+Django
+django-storages[google]
+psycopg2-binary
+redis
+gunicorn

@@ -1,0 +1,4 @@
+project: tanke
+backend: file://.launchflow
+backend_options:
+  lf_backend_url: https://cloud.dev.launchflow.com

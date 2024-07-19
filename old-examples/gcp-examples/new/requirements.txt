@@ -1,0 +1,3 @@
+fastapi
+launchflow[gcp]==0.4.0.dev9
+uvicorn

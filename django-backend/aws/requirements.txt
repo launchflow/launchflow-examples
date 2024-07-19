@@ -1,0 +1,6 @@
+launchflow[aws]
+Django
+django-storages[s3]
+psycopg2-binary
+redis
+gunicorn

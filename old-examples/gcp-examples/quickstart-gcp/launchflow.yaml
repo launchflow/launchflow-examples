@@ -1,0 +1,10 @@
+project: gcp-examples
+<<<<<<< Updated upstream
+environment: dev
+services:
+  - name: fastapi-service
+    product: gcp_cloud_run
+=======
+backend: lf://account_2746196960
+default_environment: dev
+>>>>>>> Stashed changes
