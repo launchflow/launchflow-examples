@@ -1,6 +1,8 @@
 <div style="display: flex; flex-direction: column; justify-content: center;">
     <a style="align-self: center" href="https://launchflow.com/" target="_blank">
         <img  height="auto" width="270" src="https://storage.googleapis.com/launchflow-public-images/launchflow-logo-dark.png#gh-dark-mode-only">
+    </a>
+    <a style="align-self: center" href="https://launchflow.com/" target="_blank">
         <img  height="auto" width="270" src="https://storage.googleapis.com/launchflow-public-images/launchflow-logo-light.svg#gh-light-mode-only">
     </a>
     <div style="display: flex; align-content: center; gap: 4px; justify-content: center; margin-top: 12px; margin-bottom: 12px;">
