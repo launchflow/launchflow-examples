@@ -1,6 +1,6 @@
-![LaunchFlow Logo](https://storage.googleapis.com/launchflow-public-images/launchflow-logo-dark.png#gh-dark-mode-only)
+[![LaunchFlow Logo](https://storage.googleapis.com/launchflow-public-images/launchflow-logo-dark.png#gh-dark-mode-only)](https://launchflow.com/#gh-dark-mode-only)
 
-![LaunchFlow Logo](https://storage.googleapis.com/launchflow-public-images/launchflow-logo-light.svg#gh-light-mode-only)
+[![LaunchFlow Logo](https://storage.googleapis.com/launchflow-public-images/launchflow-logo-light.svg#gh-light-mode-only)](https://launchflow.com/#gh-light-mode-only)
 
 <div style="display: flex; flex-direction: column; justify-content: center;">
     <div style="display: flex; align-content: center; gap: 4px; justify-content: center; margin-top: 12px; margin-bottom: 12px;">
