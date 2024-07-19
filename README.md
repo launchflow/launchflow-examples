@@ -5,7 +5,7 @@
     <a style="align-self: center" href="https://launchflow.com/#gh-light-mode-only" target="_blank">
         <img  height="auto" width="270" src="https://storage.googleapis.com/launchflow-public-images/launchflow-logo-light.svg#gh-light-mode-only">
     </a>
-    <div style="display: flex; align-content: center; gap: 4px; justify-content: center; margin-top: 12px; margin-bottom: 12px;">
+    <div style="display: flex; align-content: center; gap: 4px; justify-content: center; margin-top: 12px; margin-bottom: 12px;  border-bottom: none;">
         <h1 style="margin-top: 0px; margin-bottom: 0px; border-bottom: none;">
             Example Django Backend on GCP
         </h1>
