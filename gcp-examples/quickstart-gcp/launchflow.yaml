@@ -1,3 +1,5 @@
-project: examples
+project: gcp-examples
 default_environment: dev
-backend: lf://account_2746196416
+backend: lf://default
+backend_options:
+  lf_backend_url: https://cloud.dev.launchflow.com
