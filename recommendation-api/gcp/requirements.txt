@@ -1,0 +1,10 @@
+launchflow[gcp]==0.4.1.dev2
+fastapi
+uvicorn
+sqlalchemy[asyncio]
+pg8000
+redis
+asyncpg
+instructor
+openai
+pydantic

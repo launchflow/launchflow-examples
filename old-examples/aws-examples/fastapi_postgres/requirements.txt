@@ -1,7 +1,0 @@
-fastapi
-launchflow[aws]
-pg8000
-redis
-sqlalchemy[asyncio]
-uvicorn
-asyncpg

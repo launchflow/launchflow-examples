@@ -1,0 +1,7 @@
+launchflow[aws]==0.4.0.dev29
+fastapi
+uvicorn
+sqlalchemy[asyncio]
+pg8000
+redis
+asyncpg

@@ -1,2 +1,2 @@
 project: django-backend-aws
-backend: file://.launchflow
+backend: lf://default
