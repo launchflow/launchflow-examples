@@ -49,14 +49,6 @@ aws sts get-caller-identity
 
 ## ⚒️ Create your Infrastructure
 
-### Initialize LaunchFlow in your project directory
-
-```bash
-lf init
-```
-
-Learn how the `lf init` command works in the [CLI Reference Docs](https://docs.launchflow.com/reference/cli#launchflow-init).
-
 ### Automatically find and create all infrastructure used in your code
 
 ```bash
