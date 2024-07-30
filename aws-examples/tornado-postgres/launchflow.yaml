@@ -1,5 +1,0 @@
-project: lf-aws-examples
-environment: dev
-services:
-  - name: tornado-service
-    product: aws_ecs_fargate

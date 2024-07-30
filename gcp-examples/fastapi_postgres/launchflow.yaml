@@ -1,5 +1,0 @@
-project: gcp-examples
-environment: dev
-services:
-  - name: fastapi-service
-    product: gcp_cloud_run
