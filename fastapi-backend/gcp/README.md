@@ -1,15 +1,17 @@
-<div style="display: flex; flex-direction: column; justify-content: center;">
-    <a style="align-self: center" href="https://launchflow.com/" target="_blank">
+<div align="center" style="display: flex; flex-direction: column; justify-content: center;">
+    <a style="align-self: center" href="https://launchflow.com/#gh-dark-mode-only" target="_blank">
         <img  height="auto" width="270" src="https://storage.googleapis.com/launchflow-public-images/launchflow-logo-dark.png#gh-dark-mode-only">
+    </a>
+    <a style="align-self: center" href="https://launchflow.com/#gh-light-mode-only" target="_blank">
         <img  height="auto" width="270" src="https://storage.googleapis.com/launchflow-public-images/launchflow-logo-light.svg#gh-light-mode-only">
     </a>
-    <div style="display: flex; align-content: center; gap: 4px; justify-content: center; margin-top: 12px; margin-bottom: 12px;">
+    <div style="display: flex; align-content: center; gap: 4px; justify-content: center; margin-top: 12px; margin-bottom: 12px;  border-bottom: none;">
         <h1 style="margin-top: 0px; margin-bottom: 0px; border-bottom: none;">
             Example FastAPI Backend on GCP
         </h1>
     </div>
 </div>
-<div style="text-align: center;">
+<div style="text-align: center;" align="center">
 
 📖 [LaunchFlow Docs](https://docs.launchflow.com/) &nbsp; | &nbsp; ⚡ [LaunchFlow Quickstart](https://docs.launchflow.com/docs/get-started) &nbsp; | &nbsp; 👋 [LaunchFlow Slack](https://join.slack.com/t/launchflowusers/shared_invite/zt-27wlowsza-Uiu~8hlCGkvPINjmMiaaMQ)
 
