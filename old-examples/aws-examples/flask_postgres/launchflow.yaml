@@ -1,5 +1,0 @@
-project: aws-examples
-environment: dev
-services:
-  - name: flask-service
-    product: aws_ecs_fargate

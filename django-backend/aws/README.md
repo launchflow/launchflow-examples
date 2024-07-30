@@ -5,7 +5,7 @@
     </a>
     <div style="display: flex; align-content: center; gap: 4px; justify-content: center; margin-top: 12px; margin-bottom: 12px;">
         <h1 style="margin-top: 0px; margin-bottom: 0px; border-bottom: none;">
-            Example Django Backend on GCP
+            Example Django Backend on AWS
         </h1>
     </div>
 </div>
@@ -17,14 +17,14 @@
 
 ## ℹ️ Project Info
 
-An example Django backend that deploys to [GCP Cloud Run](https://cloud.google.com/run/docs) using [LaunchFlow](https://launchflow.com/).
+An example Django backend that deploys to [ECS Fargate on AWS](https://aws.amazon.com/fargate/) using [LaunchFlow](https://launchflow.com/).
 
-This project will create the following GCP resources in your GCP account:
-- Postgres database hosted on [GCP CloudSQL](https://cloud.google.com/sql/docs)
-- Redis cache hosted on [GCP Memorystore](https://cloud.google.com/memorystore/docs)
-- Static files hosted on a [GCS Bucket](https://cloud.google.com/storage/docs)
+This project will configure the following AWS resources in your AWS account:
+- Postgres database hosted on [AWS RDS](https://aws.amazon.com/rds/)
+- Redis cache hosted on [AWS Elasticache](https://aws.amazon.com/elasticache/)
+- Static files hosted on a [S3 Bucket](https://aws.amazon.com/s3/)
 
-<strong>NOTE:</strong> The GCP infrastructure is defined in [infra.py](/django-backend/gcp/django_backend/infra.py)
+<strong>NOTE:</strong> The AWS infrastructure is defined in [infra.py](/django-backend/aws/app/infra.py)
 
 ## ⚙️ Prerequisites
 
@@ -35,11 +35,14 @@ pip install -r requirements.txt
 
 <strong>NOTE:</strong> This will install the LaunchFlow Python SDK + CLI
 
-### Authenticate with GCP
+### Authenticate with AWS
+
+You can authenticate with AWS using the [AWS CLI](https://aws.amazon.com/cli/). 
+
+You can check if you are authenticated by running the following command:
 ```bash
-gcloud auth application-default login
+aws sts get-caller-identity
 ```
-<strong>NOTE:</strong> You will need the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) installed to authenticate with GCP
 
 
 ## ⚒️ Create your Infrastructure
@@ -87,14 +90,14 @@ python manage.py collectstatic
 Run the Django application locally using [Django's Development Server](https://docs.djangoproject.com/en/5.0/intro/tutorial01/#the-development-server).
 
 ```bash
-lf run -- python manage.py runserver 127.0.0.1:8000
+lf run {your environment name} -- python manage.py runserver 127.0.0.1:8000
 ```
 
-<strong>NOTE:</strong> The Django Development Server is not suitable for production. The [Dockerfile](/django-backend/gcp/Dockerfile) uses [Gunicorn](https://gunicorn.org/) instead.
+<strong>NOTE:</strong> The Django Development Server is not suitable for production. The [Dockerfile](/django-backend/aws/Dockerfile) uses [Gunicorn](https://gunicorn.org/) instead.
 
 ## 🚀 Deploy your Application (remote)
 
-### Automatically <strong>build</strong> and <strong>deploy</strong> the Django application to GCP Cloud Run
+### Automatically <strong>build</strong> and <strong>deploy</strong> the Django application to AWS ECS Fargate
 
 ```bash
 lf deploy

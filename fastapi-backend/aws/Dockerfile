@@ -5,19 +5,17 @@ WORKDIR /code
 
 # Install common dependencies since we are using a slim image
 RUN apt-get update && apt-get install -y --no-install-recommends gcc libpq-dev && apt-get clean && rm -rf /var/lib/apt/lists/*
-# Install the required Python packages defined in the requirements.txt file
+
+# Install Python dependencies defined in requirements.txt
 COPY requirements.txt .
 RUN pip install --no-cache-dir -U pip setuptools wheel && pip install -r requirements.txt
 
 # Copy the application code to the image
 COPY ./app /code/app
-# Set the environment variables
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PORT=80
 
-# Expose the port that the app runs on
+# Expose the port for the FastAPI app 
+ENV PORT=80
 EXPOSE $PORT
 
-# Run the web service on container startup
+# Run the FastAPI app using Uvicorn
 CMD uvicorn app.main:app --host 0.0.0.0 --port $PORT

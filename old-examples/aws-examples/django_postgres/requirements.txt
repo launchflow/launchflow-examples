@@ -1,5 +1,0 @@
-Django
-djangorestframework
-launchflow[aws]
-psycopg2-binary
-gunicorn

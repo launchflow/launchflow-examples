@@ -1,0 +1,6 @@
+launchflow[gcp]
+fastapi
+uvicorn
+redis
+sqlalchemy[asyncio]
+asyncpg

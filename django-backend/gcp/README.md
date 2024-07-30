@@ -17,12 +17,12 @@
 
 ## ℹ️ Project Info
 
-An example Django backend that deploys to [GCP Cloud Run](https://cloud.google.com/run/docs) using [LaunchFlow](https://launchflow.com/).
+An example Django backend that deploys to [GCP Cloud Run](https://cloud.google.com/run) using [LaunchFlow](https://launchflow.com/).
 
-This project will create the following GCP resources in your GCP account:
-- Postgres database hosted on [GCP CloudSQL](https://cloud.google.com/sql/docs)
-- Redis cache hosted on [GCP Memorystore](https://cloud.google.com/memorystore/docs)
-- Static files hosted on a [GCS Bucket](https://cloud.google.com/storage/docs)
+This project will configured the following GCP resources in your GCP account:
+- Postgres database hosted on [GCP CloudSQL](https://cloud.google.com/sql)
+- Redis cache hosted on [GCP Memorystore](https://cloud.google.com/memorystore)
+- Static files hosted on a [GCS Bucket](https://cloud.google.com/storage)
 
 <strong>NOTE:</strong> The GCP infrastructure is defined in [infra.py](/django-backend/gcp/django_backend/infra.py)
 
@@ -87,7 +87,7 @@ python manage.py collectstatic
 Run the Django application locally using [Django's Development Server](https://docs.djangoproject.com/en/5.0/intro/tutorial01/#the-development-server).
 
 ```bash
-lf run -- python manage.py runserver 127.0.0.1:8000
+lf run {your environment name} -- python manage.py runserver 127.0.0.1:8000
 ```
 
 <strong>NOTE:</strong> The Django Development Server is not suitable for production. The [Dockerfile](/django-backend/gcp/Dockerfile) uses [Gunicorn](https://gunicorn.org/) instead.

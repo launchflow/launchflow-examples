@@ -1,13 +1,13 @@
 import launchflow as lf
 
-# CloudSQLPostgres Docs: https://docs.launchflow.com/reference/gcp-resources/cloudsql
+# RDSPostgres Docs: https://docs.launchflow.com/reference/aws-resources/rds
 postgres = lf.aws.RDSPostgres("django-backend-postgres")
 
-# CloudSQLPostgres Docs: https://docs.launchflow.com/reference/gcp-resources/memorystore
+# ElasticacheRedis Docs: https://docs.launchflow.com/reference/aws-resources/elasticache
 redis = lf.aws.ElasticacheRedis("django-backend-redis")
 
-# GCSBucket Docs: https://docs.launchflow.com/reference/gcp-resources/gcs
+# S3Bucket Docs: https://docs.launchflow.com/reference/aws-resources/s3
 storage = lf.aws.S3Bucket("django-backend-storage-1234")
 
-# CloudRun Docs: https://docs.launchflow.com/reference/gcp-services/cloud-run
+# ECSFargate Docs: https://docs.launchflow.com/reference/aws-services/ecs-fargate
 ecs_fargate = lf.aws.ECSFargate("django-backend-service", dockerfile="Dockerfile")

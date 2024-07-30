@@ -1,0 +1,3 @@
+launchflow[aws]
+fastapi
+uvicorn

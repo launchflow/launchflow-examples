@@ -154,3 +154,6 @@ cython_debug/
 
 # launchflow
 .launchflow
+
+# Used for local dogfood testing
+/sandbox

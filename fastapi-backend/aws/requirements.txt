@@ -1,7 +1,6 @@
-launchflow[aws]==0.4.0.dev29
+launchflow[aws]
 fastapi
 uvicorn
-sqlalchemy[asyncio]
-pg8000
 redis
+sqlalchemy[asyncio]
 asyncpg

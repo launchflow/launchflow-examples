@@ -1,3 +1,0 @@
-project: dogfood
-default_environment: gcp-dev
-backend: lf://default

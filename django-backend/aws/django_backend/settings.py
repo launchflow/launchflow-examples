@@ -2,7 +2,7 @@ import os
 from urllib.parse import urlparse
 
 import launchflow as lf
-from django_backend.infra import cloud_run, postgres, redis, storage
+from django_backend.infra import ecs_fargate, postgres, redis, storage
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,7 +12,7 @@ SECRET_KEY = "your_secret_key"
 # This utility function returns True if the application is running on Cloud Run
 if lf.is_deployment():
     # Fetches the service URL from the Cloud Run Service
-    service_url = cloud_run.outputs().service_url
+    service_url = ecs_fargate.outputs().service_url
 
     DEBUG = False
     ALLOWED_HOSTS = [urlparse(service_url).netloc]
@@ -32,15 +32,13 @@ CACHES = {"default": redis.django_settings()}
 
 STORAGES = {
     "staticfiles": {
-        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+        "BACKEND": "storages.backends.s3.S3Storage",
     }
 }
 STATIC_URL = "/static/"
 
-# Fetches the information for the GCS bucket and populates the django-storages settings
-GS_BUCKET_NAME = storage.outputs().bucket_name
-# django-storages requires service account credentials instead of user credentials
-GS_CREDENTIALS = lf.gcp.utils.get_service_account_credentials()
+# Fetches the information for the S3 bucket and populates the django-storages settings
+AWS_STORAGE_BUCKET_NAME = storage.outputs().bucket_name
 
 
 # The rest of the settings below are boilerplate Django settings

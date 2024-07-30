@@ -5,7 +5,7 @@
     </a>
     <div style="display: flex; align-content: center; gap: 4px; justify-content: center; margin-top: 12px; margin-bottom: 12px;">
         <h1 style="margin-top: 0px; margin-bottom: 0px; border-bottom: none;">
-            Example Django Backend on GCP
+            Example FastAPI Backend on AWS
         </h1>
     </div>
 </div>
@@ -17,14 +17,14 @@
 
 ## ℹ️ Project Info
 
-An example Django backend that deploys to [GCP Cloud Run](https://cloud.google.com/run/docs) using [LaunchFlow](https://launchflow.com/).
+An example FastAPI backend that deploys to [ECS Fargate on AWS](https://aws.amazon.com/fargate/) using [LaunchFlow](https://launchflow.com/).
 
-This project will create the following GCP resources in your GCP account:
-- Postgres database hosted on [GCP CloudSQL](https://cloud.google.com/sql/docs)
-- Redis cache hosted on [GCP Memorystore](https://cloud.google.com/memorystore/docs)
-- Static files hosted on a [GCS Bucket](https://cloud.google.com/storage/docs)
+This project will configure the following AWS resources in your AWS account:
+- Postgres database hosted on [AWS RDS](https://aws.amazon.com/rds/)
+- Redis cache hosted on [AWS Elasticache](https://aws.amazon.com/elasticache/)
+- Storage bucket hosted on [AWS S3](https://aws.amazon.com/s3/)
 
-<strong>NOTE:</strong> The GCP infrastructure is defined in [infra.py](/django-backend/gcp/django_backend/infra.py)
+<strong>NOTE:</strong> The AWS infrastructure is defined in [infra.py](/fastapi-backend/aws/app/infra.py)
 
 ## ⚙️ Prerequisites
 
@@ -35,12 +35,14 @@ pip install -r requirements.txt
 
 <strong>NOTE:</strong> This will install the LaunchFlow Python SDK + CLI
 
-### Authenticate with GCP
-```bash
-gcloud auth application-default login
-```
-<strong>NOTE:</strong> You will need the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) installed to authenticate with GCP
+### Authenticate with AWS
 
+You can authenticate with AWS using the [AWS CLI](https://aws.amazon.com/cli/). 
+
+You can check if you are authenticated by running the following command:
+```bash
+aws sts get-caller-identity
+```
 
 ## ⚒️ Create your Infrastructure
 
@@ -60,41 +62,18 @@ lf create
 
 Learn how the `lf create` command works in the [CLI Reference Docs](https://docs.launchflow.com/reference/cli#launchflow-create).
 
-## 📦 Setup Django
-
-Django applications require a few steps to get started.
-
-### Create and apply the database migrations
-
-```bash
-python manage.py makemigrations && python manage.py migrate
-```
-
-### Add yourself as a superuser to the Django application
-
-```bash
-python manage.py createsuperuser
-```
-
-### Load static files used by the Django Admin UI (CSS, JS, images)
-
-```bash
-python manage.py collectstatic
-```
 
 ## 🏃 Run your Application (local)
 
-Run the Django application locally using [Django's Development Server](https://docs.djangoproject.com/en/5.0/intro/tutorial01/#the-development-server).
+Run the FastAPI application locally using [Uvicorn](https://www.uvicorn.org/).
 
 ```bash
-lf run -- python manage.py runserver 127.0.0.1:8000
+lf run {your environment name} -- uvicorn app.main:app --reload
 ```
-
-<strong>NOTE:</strong> The Django Development Server is not suitable for production. The [Dockerfile](/django-backend/gcp/Dockerfile) uses [Gunicorn](https://gunicorn.org/) instead.
 
 ## 🚀 Deploy your Application (remote)
 
-### Automatically <strong>build</strong> and <strong>deploy</strong> the Django application to GCP Cloud Run
+### Automatically <strong>build</strong> and <strong>deploy</strong> the FastAPI application to AWS ECS Fargate
 
 ```bash
 lf deploy

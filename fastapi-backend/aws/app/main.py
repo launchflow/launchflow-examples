@@ -1,31 +1,38 @@
 from contextlib import asynccontextmanager
 
-from app.infra import postgres, ecs_fargate
-from app.models import Base, StorageUser
-from app.schemas import ListUsersResponse, UserResponse
-from launchflow.fastapi import sqlalchemy_async_depends
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 import launchflow as lf
-from fastapi import Depends, FastAPI, HTTPException
-
-# Create the global FastAPI dependency for the SQLAlchemy async session
-# async_session = sqlalchemy_async_depends()
-
-
-# @asynccontextmanager
-# async def lifespan(app: FastAPI):
-#     # Create the SQLAlchemy async engine (connection pool)
-#     engine = await postgres.sqlalchemy_async_engine()
-#     # Create the database tables using the engine
-#     async with engine.begin() as conn:
-#         await conn.run_sync(Base.metadata.create_all)
-#     # Set up the FastAPI dependency
-#     async_session.setup(engine)
-#     yield
+from app.api.users import router
+from app.dependencies import async_session
+from app.infra import ecs_fargate_service, elasticache_redis, rds_postgres, s3_bucket
+from app.models import Base
+from fastapi import Depends, FastAPI
+from redis.asyncio import Redis
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Connect and cache the Resource connection info
+    await lf.connect_all(
+        ecs_fargate_service, rds_postgres, elasticache_redis, s3_bucket
+    )
+
+    # Create the SQLAlchemy async engine (connection pool)
+    engine = await rds_postgres.sqlalchemy_async_engine()
+
+    # Create the database tables using the engine
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+    # Configure the (async) SQLAlchemy connection pool
+    async_session.setup(engine)
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
+
+app.include_router(router)
 
 
 @app.get("/")
@@ -35,47 +42,30 @@ async def read_root():
 
 @app.get("/service_info")
 async def service_info():
-    return ecs_fargate.outputs().to_dict()
-
-# @app.get("/")
-# async def list_users(db: AsyncSession = Depends(async_session)):
-#     storage_users = (await db.execute(select(StorageUser))).scalars().all()
-#     return ListUsersResponse.from_storage(storage_users)
+    if lf.is_deployment():
+        # Return the ECS Fargate service info for this deployment
+        return ecs_fargate_service.outputs().to_dict()
+    return {"message": "Running locally"}
 
 
-# @app.post("/")
-# async def create_user(email: str, name: str, db: AsyncSession = Depends(async_session)):
-#     storage_user = StorageUser(email=email, name=name)
-#     db.add(storage_user)
-#     await db.commit()
-#     return UserResponse.from_storage(storage_user)
+@app.get("/test_redis")
+async def test_elasticache_redis(
+    redis_client: Redis = Depends(elasticache_redis.redis_async),
+):
+    # Test the Redis connection by setting and getting a key
+    await redis_client.set("key", "value")
+    return await redis_client.get("key")
 
 
-# @app.get("/{user_id}")
-# async def read_user(user_id: int, db: AsyncSession = Depends(async_session)):
-#     storage_user = await db.get(StorageUser, user_id)
-#     if storage_user is None:
-#         raise HTTPException(status_code=404, detail="User not found")
-#     return UserResponse.from_storage(storage_user)
+@app.get("/test_db")
+async def test_db(db: AsyncSession = Depends(async_session)):
+    # Test the RDS Postgres connection by executing a query
+    result = await db.execute(text("SELECT 1"))
+    return result.scalar_one()
 
 
-# @app.put("/{user_id}")
-# async def update_user(
-#     user_id: int, name: str, db: AsyncSession = Depends(async_session)
-# ):
-#     storage_user = await db.get(StorageUser, user_id)
-#     if storage_user is None:
-#         raise HTTPException(status_code=404, detail="User not found")
-#     storage_user.name = name
-#     await db.commit()
-#     return UserResponse.from_storage(storage_user)
-
-
-# @app.delete("/{user_id}")
-# async def delete_user(user_id: int, db: AsyncSession = Depends(async_session)):
-#     storage_user = await db.get(StorageUser, user_id)
-#     if storage_user is None:
-#         raise HTTPException(status_code=404, detail="User not found")
-#     await db.delete(storage_user)
-#     await db.commit()
-#     return UserResponse.from_storage(storage_user)
+@app.get("/test_storage")
+async def test_storage():
+    # Test the S3 connection by uploading and downloading a file
+    s3_bucket.upload_from_string("Hello, world!", "test.txt")
+    return s3_bucket.download_file("test.txt").decode("utf-8")
