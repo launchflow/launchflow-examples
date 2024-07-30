@@ -24,6 +24,7 @@
 ### AWS
 - [Django Backend on ECS Fargate](/django-backend/aws/)
 - [FastAPI Backend on ECS Fargate](/fastapi-backend/aws/)
+- [FastAPI Microservices on ECS Fargate](/fastapi-microservices/aws/)
 - [Flask Backend on ECS Fargate](/flask-backend/aws/)
 - [LaunchFlow Quickstart](/quickstart/aws/)
 
@@ -31,5 +32,6 @@
 ### GCP
 - [Django Backend on Cloud Run](/django-backend/gcp/)
 - [FastAPI Backend on Cloud Run](/fastapi-backend/gcp/)
+- [FastAPI Microservices on Cloud Run](/fastapi-microservices/gcp/)
 - [Flask Backend on Cloud Run](/flask-backend/gcp/)
 - [LaunchFlow Quickstart](/quickstart/gcp/)
