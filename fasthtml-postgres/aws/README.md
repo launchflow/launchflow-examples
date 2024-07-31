@@ -63,6 +63,14 @@ Learn how the `lf create` command works in the [CLI Reference Docs](https://docs
 lf run {your environment name} -- uvicorn app.main:app --reload
 ```
 
+## 🗑️ Drop / recreate the Postgres tables
+
+### Run the utility defined in [crud.py](/fasthtml-postgres/aws/app/crud.py) to drop / recreate the database in a given environment.
+
+```bash
+lf run {your environment name} -- python app/crud.py
+```
+
 ## 🚀 Deploy to AWS
 
 ### Automatically <strong>build</strong> and <strong>deploy</strong> the FastAPI application to AWS ECS Fargate
