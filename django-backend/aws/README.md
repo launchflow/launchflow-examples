@@ -84,7 +84,7 @@ python manage.py collectstatic
 Run the Django application locally using [Django's Development Server](https://docs.djangoproject.com/en/5.0/intro/tutorial01/#the-development-server).
 
 ```bash
-lf run {env} -- python manage.py runserver 127.0.0.1:8000
+lf run {your env} -- python manage.py runserver 127.0.0.1:8000
 ```
 
 <strong>NOTE:</strong> The Django Development Server is not suitable for production. The [Dockerfile](/django-backend/aws/Dockerfile) uses [Gunicorn](https://gunicorn.org/) instead.

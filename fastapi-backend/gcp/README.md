@@ -60,7 +60,7 @@ Learn how the `lf create` command works in the [CLI Reference Docs](https://docs
 Run the FastAPI application locally using [Uvicorn](https://www.uvicorn.org/).
 
 ```bash
-lf run {env} -- uvicorn app.main:app --reload
+lf run {your env} -- uvicorn app.main:app --reload
 ```
 
 ## 🚀 Deploy your Application (remote)
