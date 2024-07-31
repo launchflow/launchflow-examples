@@ -1,0 +1,2 @@
+launchflow[gcp]
+python-fasthtml

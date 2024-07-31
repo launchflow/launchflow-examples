@@ -21,7 +21,7 @@
 
 An example FastAPI backend that deploys to [GCP Cloud Run](https://cloud.google.com/run) using [LaunchFlow](https://launchflow.com/).
 
-This project will configured the following GCP resources in your GCP account:
+This project will configure the following GCP resources in your GCP account:
 - Postgres database hosted on [GCP CloudSQL](https://cloud.google.com/sql)
 - Redis cache hosted on [GCP Memorystore](https://cloud.google.com/memorystore)
 - Storage bucket hosted on [Google Cloud Storage](https://cloud.google.com/storage)

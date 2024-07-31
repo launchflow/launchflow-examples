@@ -7,7 +7,7 @@
     </a>
     <div style="display: flex; align-content: center; gap: 4px; justify-content: center; margin-top: 12px; margin-bottom: 12px;  border-bottom: none;">
         <h1 style="margin-top: 0px; margin-bottom: 0px; border-bottom: none;">
-            Example Flask Backend on GCP
+            Deploy FastHTML + Postgres on AWS
         </h1>
     </div>
 </div>
@@ -19,14 +19,13 @@
 
 ## ℹ️ Project Info
 
-An example Flask backend that deploys to [GCP Cloud Run](https://cloud.google.com/run) using [LaunchFlow](https://launchflow.com/).
+Deploy FastHTML to [ECS Fargate on AWS](https://aws.amazon.com/fargate/) using [LaunchFlow](https://launchflow.com/).
 
-This project will configure the following GCP resources in your GCP account:
-- Postgres database hosted on [GCP CloudSQL](https://cloud.google.com/sql)
-- Redis cache hosted on [GCP Memorystore](https://cloud.google.com/memorystore)
-- Storage bucket hosted on [Google Cloud Storage](https://cloud.google.com/storage)
-
-<strong>NOTE:</strong> The GCP infrastructure is defined in [infra.py](/flask-backend/gcp/app/infra.py)
+This project will configure the following AWS resources in your AWS account:
+- Docker Repository hosted on [AWS ECR](https://aws.amazon.com/ecr/)
+- A Docker build pipeline hosted on [AWS CodeBuild](https://aws.amazon.com/codebuild)
+- Serverless FastHTML app hosted on [AWS ECS Fargate](https://aws.amazon.com/ecs/)
+- A Postgres database hosted on [AWS RDS](https://aws.amazon.com/rds/)
 
 ## ⚙️ Prerequisites
 
@@ -37,14 +36,16 @@ pip install -r requirements.txt
 
 <strong>NOTE:</strong> This will install the LaunchFlow Python SDK + CLI
 
-### Authenticate with GCP
+### Authenticate with AWS
+
+You can authenticate with AWS using the [AWS CLI](https://aws.amazon.com/cli/). 
+
+You can check if you are authenticated by running the following command:
 ```bash
-gcloud auth application-default login
+aws sts get-caller-identity
 ```
-<strong>NOTE:</strong> You will need the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) installed to authenticate with GCP
 
-
-## ⚒️ Create your Infrastructure
+## ⚒️ Create AWS infrastructure
 
 ### Automatically find and create all infrastructure used in your code
 
@@ -54,18 +55,17 @@ lf create
 
 Learn how the `lf create` command works in the [CLI Reference Docs](https://docs.launchflow.com/reference/cli#launchflow-create).
 
+## 🏃 Run locally
 
-## 🏃 Run your Application (local)
-
-Run the Flask application locally using the Flask CLI.
+### Run the FastHTML app locally using [Uvicorn](https://www.uvicorn.org/).
 
 ```bash
-lf run {your environment name} -- flask run --debug
+lf run {your environment name} -- uvicorn app.main:app --reload
 ```
 
-## 🚀 Deploy your Application (remote)
+## 🚀 Deploy to AWS
 
-### Automatically <strong>build</strong> and <strong>deploy</strong> the Flask application to GCP Cloud Run
+### Automatically <strong>build</strong> and <strong>deploy</strong> the FastAPI application to AWS ECS Fargate
 
 ```bash
 lf deploy
@@ -75,13 +75,11 @@ Learn how the `lf deploy` command works in the [CLI Reference Docs](https://docs
 
 ## 🧹 Clean up your infrastructure
 
-### Automatically delete all infrastructure used by your application.
+### Automatically delete infrastructure used by your application.
 
 ```bash
 lf destroy
 ```
-
-Learn how this command works in the [LaunchFlow Docs](https://docs.launchflow.com/reference/cli#launchflow-clean).
 
 Learn how the `lf destroy` command works in the [CLI Reference Docs](https://docs.launchflow.com/reference/cli#launchflow-destroy).
 

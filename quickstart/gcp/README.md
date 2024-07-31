@@ -21,7 +21,7 @@
 
 A simple FastAPI app connected to a storage bucket that deploys to [GCP Cloud Run](https://cloud.google.com/run) using [LaunchFlow](https://launchflow.com/).
 
-This project will configured the following GCP resources in your GCP account:
+This project will configure the following GCP resources in your GCP account:
 - Docker Repository hosted on [GCP ArtifactRegistry](https://cloud.google.com/artifact-registry)
 - Serverless FastAPI app hosted on [GCP Cloud Run](https://cloud.google.com/run)
 - Storage Bucket hosted on [Google Cloud Storage](https://cloud.google.com/storage)
