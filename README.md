@@ -26,6 +26,8 @@
 - [FastAPI Backend on ECS Fargate](/fastapi-backend/aws/)
 - [FastAPI Microservices on ECS Fargate](/fastapi-microservices/aws/)
 - [Flask Backend on ECS Fargate](/flask-backend/aws/)
+- [FastHTML Starter on ECS Fargate](/fasthtml/aws/)
+- [FastHTML + Postgres on ECS Fargate](/fasthtml-postgres/aws/)
 - [LaunchFlow Quickstart](/quickstart/aws/)
 
 
@@ -34,4 +36,6 @@
 - [FastAPI Backend on Cloud Run](/fastapi-backend/gcp/)
 - [FastAPI Microservices on Cloud Run](/fastapi-microservices/gcp/)
 - [Flask Backend on Cloud Run](/flask-backend/gcp/)
+- [FastHTML Starter on Cloud Run](/fasthtml/gcp/)
+- [FastHTML + Postgres on Cloud Run](/fasthtml-postgres/gcp/)
 - [LaunchFlow Quickstart](/quickstart/gcp/)
