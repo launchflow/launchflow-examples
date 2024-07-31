@@ -27,6 +27,8 @@ This project will configure the following AWS resources in your AWS account:
 - Serverless FastHTML app hosted on [AWS ECS Fargate](https://aws.amazon.com/ecs/)
 - A Postgres database hosted on [AWS RDS](https://aws.amazon.com/rds/)
 
+<strong>NOTE:</strong> This is a fork of the [FastHTML TODO App example](https://github.com/AnswerDotAI/fasthtml-example/tree/main/01_todo_app). This version uses a Postgres database instead of the built-in SQLite database.
+
 ## ⚙️ Prerequisites
 
 ### Install the requirements

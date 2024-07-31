@@ -26,6 +26,9 @@ This project will configure the following GCP resources in your GCP account:
 - Serverless FastHTML app hosted on [GCP Cloud Run](https://cloud.google.com/run)
 - A Postgres database hosted on [GCP Cloud SQL](https://cloud.google.com/sql)
 
+<strong>NOTE:</strong> This is a fork of the [FastHTML TODO App example](https://github.com/AnswerDotAI/fasthtml-example/tree/main/01_todo_app). This version uses a Postgres database instead of the built-in SQLite database.
+
+
 ## ⚙️ Prerequisites
 
 ### Install the requirements
