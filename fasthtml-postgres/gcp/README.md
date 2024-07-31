@@ -7,7 +7,7 @@
     </a>
     <div style="display: flex; align-content: center; gap: 4px; justify-content: center; margin-top: 12px; margin-bottom: 12px;  border-bottom: none;">
         <h1 style="margin-top: 0px; margin-bottom: 0px; border-bottom: none;">
-            Example Flask Backend on GCP
+            Deploy FastHTML + Postgres on GCP
         </h1>
     </div>
 </div>
@@ -19,14 +19,12 @@
 
 ## ℹ️ Project Info
 
-An example Flask backend that deploys to [GCP Cloud Run](https://cloud.google.com/run) using [LaunchFlow](https://launchflow.com/).
+Deploy FastHTML to [GCP Cloud Run](https://cloud.google.com/run) using [LaunchFlow](https://launchflow.com/).
 
 This project will configure the following GCP resources in your GCP account:
-- Postgres database hosted on [GCP CloudSQL](https://cloud.google.com/sql)
-- Redis cache hosted on [GCP Memorystore](https://cloud.google.com/memorystore)
-- Storage bucket hosted on [Google Cloud Storage](https://cloud.google.com/storage)
-
-<strong>NOTE:</strong> The GCP infrastructure is defined in [infra.py](/flask-backend/gcp/app/infra.py)
+- Docker Repository hosted on [GCP Artifact Registry](https://cloud.google.com/artifact-registry)
+- Serverless FastHTML app hosted on [GCP Cloud Run](https://cloud.google.com/run)
+- A Postgres database hosted on [GCP Cloud SQL](https://cloud.google.com/sql)
 
 ## ⚙️ Prerequisites
 
@@ -44,7 +42,7 @@ gcloud auth application-default login
 <strong>NOTE:</strong> You will need the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) installed to authenticate with GCP
 
 
-## ⚒️ Create your Infrastructure
+## ⚒️ Create GCP infrastructure
 
 ### Automatically find and create all infrastructure used in your code
 
@@ -54,18 +52,17 @@ lf create
 
 Learn how the `lf create` command works in the [CLI Reference Docs](https://docs.launchflow.com/reference/cli#launchflow-create).
 
+## 🏃 Run locally
 
-## 🏃 Run your Application (local)
-
-Run the Flask application locally using the Flask CLI.
+### Run the FastHTML app locally using [Uvicorn](https://www.uvicorn.org/).
 
 ```bash
-lf run {your environment name} -- flask run --debug
+lf run {your environment name} -- uvicorn app.main:app --reload
 ```
 
-## 🚀 Deploy your Application (remote)
+## 🚀 Deploy to GCP
 
-### Automatically <strong>build</strong> and <strong>deploy</strong> the Flask application to GCP Cloud Run
+### Automatically <strong>build</strong> and <strong>deploy</strong> the FastAPI application to GCP Cloud Run
 
 ```bash
 lf deploy
@@ -75,13 +72,11 @@ Learn how the `lf deploy` command works in the [CLI Reference Docs](https://docs
 
 ## 🧹 Clean up your infrastructure
 
-### Automatically delete all infrastructure used by your application.
+### Automatically delete infrastructure used by your application.
 
 ```bash
 lf destroy
 ```
-
-Learn how this command works in the [LaunchFlow Docs](https://docs.launchflow.com/reference/cli#launchflow-clean).
 
 Learn how the `lf destroy` command works in the [CLI Reference Docs](https://docs.launchflow.com/reference/cli#launchflow-destroy).
 

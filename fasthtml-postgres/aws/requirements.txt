@@ -1,0 +1,5 @@
+launchflow[aws]
+python-fasthtml
+sqlalchemy[asyncio]
+pg8000
+asyncpg
