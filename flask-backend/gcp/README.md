@@ -60,7 +60,7 @@ Learn how the `lf create` command works in the [CLI Reference Docs](https://docs
 Run the Flask application locally using the Flask CLI.
 
 ```bash
-lf run {your environment name} -- flask run --debug
+lf run {env} -- flask run --debug
 ```
 
 ## 🚀 Deploy your Application (remote)

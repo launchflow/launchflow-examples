@@ -62,7 +62,7 @@ Learn how the `lf create` command works in the [CLI Reference Docs](https://docs
 ### Run the FastHTML app locally using [Uvicorn](https://www.uvicorn.org/).
 
 ```bash
-lf run {your environment name} -- uvicorn app.main:app --reload
+lf run {env} -- uvicorn app.main:app --reload
 ```
 
 ## 🗑️ Drop / recreate the Postgres tables
@@ -70,7 +70,7 @@ lf run {your environment name} -- uvicorn app.main:app --reload
 ### Run the utility defined in [crud.py](/fasthtml-postgres/aws/app/crud.py) to drop / recreate the database in a given environment.
 
 ```bash
-lf run {your environment name} -- python app/crud.py
+lf run {env} -- python app/crud.py
 ```
 
 ## 🚀 Deploy to AWS

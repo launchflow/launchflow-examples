@@ -63,12 +63,12 @@ Run the FastAPI services locally using [Uvicorn](https://www.uvicorn.org/).
 
 Service 1:
 ```bash
-lf run {your environment name} -- uvicorn service1.app.main:app --reload
+lf run {env} -- uvicorn service1.app.main:app --reload
 ```
 
 Service 2:
 ```bash
-lf run {your environment name} -- uvicorn service2.app.main:app --reload
+lf run {env} -- uvicorn service2.app.main:app --reload
 ```
 
 ## 🚀 Deploy your Services (remote)
