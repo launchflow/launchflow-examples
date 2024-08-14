@@ -1,8 +1,10 @@
 import os
-from urllib.parse import urlparse
 
 import launchflow as lf
 from django_backend.infra import ecs_fargate, postgres, redis, storage
+
+# from urllib.parse import urlparse
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -15,7 +17,8 @@ if lf.is_deployment():
     service_url = ecs_fargate.outputs().service_url
 
     DEBUG = False
-    ALLOWED_HOSTS = [urlparse(service_url).netloc]
+    # ALLOWED_HOSTS = [urlparse(service_url).netloc]
+    ALLOWED_HOSTS = ["*"]  # TODO: Change this to the actual domain
     CSRF_TRUSTED_ORIGINS = [service_url]
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -49,7 +52,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
     "app",
 ]
 

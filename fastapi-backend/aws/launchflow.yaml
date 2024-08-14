@@ -1,2 +1,3 @@
 project: fastapi-backend
 backend: file://.launchflow
+default_environment: dev

@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends gcc libpq-dev &
 COPY requirements.txt .
 RUN pip install --no-cache-dir -U pip setuptools wheel && pip install -r requirements.txt
 
-
 # Copy the application code to the image
 COPY ./manage.py /code/manage.py
 COPY ./app /code/app
