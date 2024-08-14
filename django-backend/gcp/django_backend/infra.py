@@ -1,13 +1,13 @@
 import launchflow as lf
 
 # CloudSQLPostgres Docs: https://docs.launchflow.com/reference/gcp-resources/cloudsql
-postgres = lf.gcp.CloudSQLPostgres("django-backend-postgres")
+postgres = lf.gcp.ComputeEnginePostgres("django-backend-postgres")
 
 # CloudSQLPostgres Docs: https://docs.launchflow.com/reference/gcp-resources/memorystore
-redis = lf.gcp.MemorystoreRedis("django-backend-redis")
+redis = lf.gcp.ComputeEngineRedis("django-backend-redis")
 
 # GCSBucket Docs: https://docs.launchflow.com/reference/gcp-resources/gcs
-storage = lf.gcp.GCSBucket("django-backend-storage")
+storage = lf.gcp.GCSBucket("django-backend-storage-tanke")
 
 # CloudRun Docs: https://docs.launchflow.com/reference/gcp-services/cloud-run
 cloud_run = lf.gcp.CloudRun("django-backend-service", dockerfile="Dockerfile")

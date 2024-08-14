@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 import launchflow as lf
 from app.api.users import router
 from app.dependencies import async_session
-from app.infra import ecs_fargate_service, elasticache_redis, rds_postgres, s3_bucket
+from app.infra import ecs_fargate_service, postgres, redis, s3_bucket
 from app.models import Base
 from fastapi import Depends, FastAPI
 from redis.asyncio import Redis
@@ -14,12 +14,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Connect and cache the Resource connection info
-    await lf.connect_all(
-        ecs_fargate_service, rds_postgres, elasticache_redis, s3_bucket
-    )
+    # await lf.connect_all(ecs_fargate_service, postgres, redis, s3_bucket)
 
     # Create the SQLAlchemy async engine (connection pool)
-    engine = await rds_postgres.sqlalchemy_async_engine()
+    engine = await postgres.sqlalchemy_async_engine()
 
     # Create the database tables using the engine
     async with engine.begin() as conn:
@@ -50,7 +48,7 @@ async def service_info():
 
 @app.get("/test_redis")
 async def test_elasticache_redis(
-    redis_client: Redis = Depends(elasticache_redis.redis_async),
+    redis_client: Redis = Depends(redis.redis_async),
 ):
     # Test the Redis connection by setting and getting a key
     await redis_client.set("key", "value")

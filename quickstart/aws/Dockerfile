@@ -11,7 +11,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -U pip setuptools wheel && pip install -r requirements.txt
 
 # Copy the application code to the image
-COPY ./app /code/app
+COPY ./main.py /code/main.py
 
 # Expose the port for the FastAPI app 
 ENV PORT=80

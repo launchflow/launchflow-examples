@@ -5,7 +5,9 @@ WORKDIR /code
 
 # Install common dependencies since we are using a slim image
 RUN apt-get update && apt-get install -y --no-install-recommends gcc libpq-dev && apt-get clean && rm -rf /var/lib/apt/lists/*
-# Install the required Python packages defined in the requirements.txt file
+
+# Install Python dependencies defined in requirements.txt
+COPY requirements.txt .
 RUN pip install --no-cache-dir -U pip setuptools wheel && pip install -r requirements.txt
 
 # Copy the application code to the image
