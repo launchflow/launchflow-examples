@@ -15,3 +15,6 @@ api = lf.aws.LambdaStaticService(
     handler=lambda_handler,
     requirements_txt_path="requirements.txt",
 )
+
+# NOTE: your requirements.txt dependencies cannot be larger than 50MB due to AWS Lambda
+# limitations. We are working on a Docker variant to overcome this limitation.
