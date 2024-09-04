@@ -1,2 +1,3 @@
-project: launchflow-quickstart
-backend: file://.launchflow
+project: quickstart
+backend: lf://default
+default_environment: dev
