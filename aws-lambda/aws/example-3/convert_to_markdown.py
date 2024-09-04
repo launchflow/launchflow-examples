@@ -5,6 +5,14 @@ import launchflow as lf
 import requests
 from markdownify import markdownify as md
 
+mysql_rds = lf.aws.RDS(
+    "mysql-rds-public",
+    publicly_accessible=True,  # Accessible from the internet (password protected)
+    engine_version=lf.aws.rds.RDSEngineVersion.MYSQL8_0,
+)
+
+
+# Static webpage to convert a URL to markdown
 HTML = """
 <html lang="en">
     <head>
@@ -43,7 +51,7 @@ HTML = """
     </head>
     <body class="bg-gray-100 text-gray-900">
         <div class="min-h-screen flex items-center justify-center">
-            <div class="bg-white p-8 rounded shadow-md w-full max-w-5xl flex">
+            <div class="bg-white p-8 rounded shadow-md w-full max-w-[80%] flex">
                 <!-- Sidebar for History -->
                 <div class="w-1/3 pr-6">
                     <h2 class="text-xl font-semibold mb-4">History</h2>
@@ -71,7 +79,7 @@ HTML = """
             document.getElementById('markdownForm').onsubmit = function(event) {
                 event.preventDefault();
                 const url = document.getElementById('url').value;
-                fetch(`?url=${encodeURIComponent(url)}`)
+                fetch(`/convert?url=${encodeURIComponent(url)}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
@@ -120,54 +128,64 @@ HTML = """
 </html>
 """
 
-# mysql = lf.aws.EC2MySQL("mysql-vm")
-# mysql_rds = lf.aws.RDS(
-#     "mysql-rds",
-#     publicly_accessible=False,
-#     engine_version=lf.aws.rds.RDSEngineVersion.MYSQL8_0,
-# )
 
-
+# Fetches the content of a URL and converts it to markdown
 def get_markdown(url: str) -> str:
     response = requests.get(url)
     if response.status_code != 200:
         return (
             f"Error: could not fetch markdown from {url}. Code: {response.status_code}"
         )
-    return md(response.text)
+    # Filters out buttons and other non-essential elements
+    return md(response.text, strip=["a"])
 
 
 def lambda_handler(event, context):
-    # Serve the history endpoint
-    if event.get("path", "/") == "/history" and event.get("httpMethod", "GET") == "GET":
-        urls = mysql.query("SELECT url FROM markdown.conversions;")
-        return {
-            "statusCode": 200,
-            "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"urls": [url for url, in urls]}),
-        }
-
-    query_params = event.get("queryStringParameters", {}) or {}
-    url = query_params.get("url")
-
-    # Return the markdown content if a URL is provided
-    if url:
-        markdown_content = get_markdown(url)
-        mysql.query(
-            f"INSERT INTO markdown.conversions (url, markdown) VALUES ('{url}', '{markdown_content}');"
-        )
-        return {
-            "statusCode": 200,
-            "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"markdown": markdown_content}),
-        }
-
     # Serve the HTML page on the root path
     if event.get("path", "/") == "/" and event.get("httpMethod", "GET") == "GET":
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "text/html"},
             "body": HTML,
+        }
+
+    # Serve the conversion history endpoint
+    if event.get("path", "/") == "/history" and event.get("httpMethod", "GET") == "GET":
+        urls = mysql_rds.query("SELECT url FROM markdown.conversions;")
+        return {
+            "statusCode": 200,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({"urls": [url for url, in urls]}),
+        }
+
+    # Serve the markdown conversion endpoint
+    if event.get("path", "/") == "/convert" and event.get("httpMethod", "GET") == "GET":
+        query_params = event.get("queryStringParameters", {}) or {}
+        url = query_params.get("url")
+
+        # Return the markdown content if a URL is provided
+        if url:
+            markdown_content = get_markdown(url)
+            mysql_rds.query(
+                f"INSERT INTO markdown.conversions (url, markdown) VALUES ('{url}', '{markdown_content}');"
+            )
+            print(f"Converted {url} to markdown.")
+            print(f"Markdown: {markdown_content}")
+
+            # Replace new lines with <br> tags for proper HTML rendering
+            markdown_with_breaks = markdown_content.replace("\n", "<br>")
+
+            return {
+                "statusCode": 200,
+                "headers": {"Content-Type": "application/json"},
+                "body": json.dumps(
+                    {"markdown": f"<p class='markdown-body'>{markdown_with_breaks}</p>"}
+                ),
+            }
+        return {
+            "statusCode": 400,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({"error": "URL parameter is required"}),
         }
 
     # Return a 404 error for all other paths
@@ -178,30 +196,40 @@ def lambda_handler(event, context):
     }
 
 
-# api_gateway = lf.aws.APIGateway("tanke-api-gateway")
+# Allows the Lambda function to access the internet
+static_ip = lf.aws.ElasticIP("my-static-ip")
+nat_gateway = lf.aws.NATGateway("my-nat-gateway", elastic_ip=static_ip)
+
+# Create / Deploy the Lambda function. Includes dependencies in requirements.txt
+api = lf.aws.LambdaStaticService(
+    "convert-markdown-lambda",
+    handler=lambda_handler,
+    requirements_txt_path="requirements.txt",
+)
 
 
+# Utility CLI commands for creating and clearing the MySQL table.
+# We can run these locally since we set `publicly_accessible=True` for the MySQL RDS instance.
 if __name__ == "__main__":
-    mysql.query("Select 1;")
+    mysql_rds.query("Select 1;")
     print("MySQL connection successful.")
 
-    mysql.query("CREATE DATABASE IF NOT EXISTS markdown;")
-    mysql.query(
-        """
-        CREATE TABLE IF NOT EXISTS markdown.conversions (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            url VARCHAR(255) NOT NULL,
-            markdown TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-        """
-    )
+    # to create the table, run `python convert_to_markdown.py create`
+    if len(sys.argv) > 1 and sys.argv[1] == "create":
+        mysql_rds.query("CREATE DATABASE IF NOT EXISTS markdown;")
+        mysql_rds.query(
+            """
+            CREATE TABLE IF NOT EXISTS markdown.conversions (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                url VARCHAR(255) NOT NULL,
+                markdown TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            """
+        )
+        print("Table created.")
 
     # to clear the table, run `python convert_to_markdown.py clear`
     if len(sys.argv) > 1 and sys.argv[1] == "clear":
-        mysql.query("TRUNCATE TABLE markdown.conversions;")
+        mysql_rds.query("TRUNCATE TABLE markdown.conversions;")
         print("Table cleared.")
-
-    # to ssh into the database, run `python convert_to_markdown.py ssh`
-    if len(sys.argv) > 1 and sys.argv[1] == "ssh":
-        mysql.ssh()

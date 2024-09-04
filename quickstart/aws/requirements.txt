@@ -1,1 +1,3 @@
-git+https://github.com/launchflow/launchflow.git@lambda_service#egg=launchflow[aws]
+launchflow[aws]
+fastapi
+uvicorn
