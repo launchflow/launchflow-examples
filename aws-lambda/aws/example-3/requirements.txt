@@ -1,0 +1,4 @@
+launchflow[aws]==0.4.9.dev3
+sqlalchemy
+pymysql[rsa]
+markdownify

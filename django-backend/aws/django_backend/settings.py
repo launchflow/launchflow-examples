@@ -11,15 +11,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # TODO(developer): Update the secret key before deploying to production!
 SECRET_KEY = "your_secret_key"
 
-# This utility function returns True if the application is running on Cloud Run
+# This utility function returns True if the application is running on ECS Fargate
 if lf.is_deployment():
-    # Fetches the service URL from the Cloud Run Service
+    # Fetches the service URL from the ECS Fargate service
     service_url = ecs_fargate.outputs().service_url
 
     DEBUG = False
     # ALLOWED_HOSTS = [urlparse(service_url).netloc]
     ALLOWED_HOSTS = ["*"]  # TODO: Change this to the actual domain
-    CSRF_TRUSTED_ORIGINS = [service_url]
+
+    # TODO: There is a bug with the CSRF_TRUSTED_ORIGINS setting for ECS Fargate.
+    # Reach out to team@launchflow.com for a workaround.
+    # CSRF_TRUSTED_ORIGINS = [service_url]
+    CSRF_TRUSTED_ORIGINS = ["*"]
+
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
@@ -27,10 +32,10 @@ else:
     DEBUG = True
     ALLOWED_HOSTS = ["*"]
 
-# Fetches the Django options for the Postgres instance hosted on Cloud SQL
+# Fetches the Django options for the Postgres instance hosted on RDS
 DATABASES = {"default": postgres.django_settings()}
 
-# Fetches the Django options for the Redis instance hosted on Memorystore
+# Fetches the Django options for the Redis instance hosted on ElastiCache
 CACHES = {"default": redis.django_settings()}
 
 STORAGES = {
