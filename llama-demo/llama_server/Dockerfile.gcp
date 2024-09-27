@@ -1,0 +1,32 @@
+# Use the existing Dockerfile from the repo as the base
+FROM ubuntu:22.04
+
+# Install necessary dependencies
+RUN apt-get update && apt-get install -y \
+    git build-essential cmake wget unzip curl python3 python3-distutils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Google Cloud SDK (for gsutil)
+RUN curl -sSL https://sdk.cloud.google.com | bash && \
+    /root/google-cloud-sdk/install.sh
+
+ENV PATH=$PATH:/root/google-cloud-sdk/bin
+
+# Clone the llama.cpp repository
+RUN git clone https://github.com/ggerganov/llama.cpp.git /app/llama.cpp
+WORKDIR /app/llama.cpp
+
+# Build server
+RUN make llama-server
+
+# Expose necessary port for the server
+EXPOSE 80
+
+# Copy a custom script that handles the download at runtime
+COPY download_and_run.sh /app/download_and_run.sh
+RUN chmod +x /app/download_and_run.sh
+
+WORKDIR /app
+
+# Start the server through the custom script
+ENTRYPOINT ["/app/download_and_run.sh"]

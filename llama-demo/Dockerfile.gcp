@@ -1,0 +1,19 @@
+FROM python:3.11-slim
+
+WORKDIR /code
+
+RUN apt-get update && apt-get install -y --no-install-recommends g++ gcc
+
+COPY ./main.py /code/main.py
+COPY ./infra.py /code/infra.py
+COPY ./llama_demo /code/llama_demo
+COPY ./templates /code/templates
+COPY ./requirements.txt /code/requirements.txt
+
+RUN pip install uv
+RUN uv pip install --system -r requirements.txt
+
+ENV PORT=80
+EXPOSE $PORT
+
+CMD fastapi run main.py --host 0.0.0.0 --port $PORT

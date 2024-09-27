@@ -1,0 +1,8 @@
+fastapi[standard]
+launchflow[gcp]
+pydantic
+pydantic-settings
+openai
+mangum
+durationpy==0.6
+python-dotenv
