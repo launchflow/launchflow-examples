@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en" class="h-full dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>LaunchFlow Demo</title>
+        <link rel="preconnect" href="https://rsms.me/" />
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+        <style>
+            :root {
+                font-family: Inter, sans-serif;
+                font-feature-settings:
+                    "liga" 1,
+                    "calt" 1; /* fix for Chrome */
+            }
+            @supports (font-variation-settings: normal) {
+                :root {
+                    font-family: InterVariable, sans-serif;
+                }
+            }
+
+            html {
+                color-scheme: dark;
+            }
+        </style>
+
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/franken-ui/dist/css/core.min.css"
+        />
+
+        <script>
+            const htmlElement = document.documentElement;
+
+            if (
+                localStorage.getItem("mode") === "dark" ||
+                (!("mode" in localStorage) &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+                console.log;
+                htmlElement.classList.add("dark");
+            } else {
+                htmlElement.classList.remove("dark");
+            }
+
+            htmlElement.classList.add("uk-theme-zinc");
+        </script>
+
+        <script
+            type="module"
+            src="https://unpkg.com/franken-ui/dist/js/core.iife.js"
+        ></script>
+        <script
+            type="module"
+            src="https://unpkg.com/franken-ui/dist/js/icon.iife.js"
+        ></script>
+    </head>
+    <body class="bg-background text-foreground h-full">
+        <main class="w-full min-h-screen flex-1">
+            <nav
+                class="fixed z-50 top-0 pl-4 uk-navbar-container w-full"
+                uk-navbar
+            >
+                <div class="uk-navbar-left">
+                    <ul class="uk-navbar-nav">
+                        {% for item in navigation %} {% if item.active %}
+                        <li class="uk-active">{% else %}</li>
+
+                        <li>
+                            {% endif %}
+                            <a href="{{ item.href }}">{{ item.caption }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="flex flex-col w-full h-screen mx-auto items-center">
+                <div
+                    class="flex-grow pt-20 overflow-auto w-full items-center flex flex-col"
+                    id="content"
+                ></div>
+                <div class="py-4 max-w-[800px] w-full flex">
+                    <form id="chat-form" class="w-full">
+                        <textarea
+                            class="uk-textarea"
+                            id="chat-input"
+                            rows="5"
+                            placeholder="Message Llama Demo Bot..."
+                            aria-label="Textarea"
+                        ></textarea>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <script>
+            async function streamChat(
+                messageContent,
+                contentDiv,
+                inputValue,
+                context,
+            ) {
+                const response = await fetch("/v1/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        message: inputValue,
+                        context: context,
+                    }),
+                });
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let done = false;
+                let responseText = "";
+                while (!done) {
+                    const { value, done: readerDone } = await reader.read();
+                    done = readerDone;
+                    let text = decoder.decode(value, { stream: !done });
+
+                    if (text.startsWith('"') && text.endsWith('"')) {
+                        text = text.substring(1, text.length - 1);
+                    }
+
+                    responseText += text;
+                    messageContent.innerHTML = marked.parse(responseText);
+                    contentDiv.scrollTop = contentDiv.scrollHeight;
+                }
+                return responseText;
+            }
+
+            async function fetchChat(
+              messageContent,
+              contentDiv,
+              inputValue,
+              context,
+            ) {
+                const response = await fetch("/v1/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        message: inputValue,
+                        context: context,
+                    }),
+                });
+
+                const jsonResponse = await response.json();
+                console.log(jsonResponse);
+
+                let responseText = jsonResponse.content;
+                messageContent.innerHTML = marked.parse(responseText);
+                contentDiv.scrollTop = contentDiv.scrollHeight;
+                return responseText;
+            }
+
+            document.addEventListener("DOMContentLoaded", (event) => {
+                document.querySelector("#chat-input").focus();
+            });
+
+            const context = [];
+
+            const chatForm = document.getElementById("chat-form");
+
+            chatForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+                const input = document.getElementById("chat-input");
+                const contentDiv = document.getElementById("content");
+
+                const inputValue = input.value;
+
+                context.push({
+                    content: inputValue,
+                    role: "user",
+                });
+
+                const message = marked.parse(inputValue);
+                contentDiv.innerHTML += `<div class="-mr-3 max-w-[800px] flex w-full justify-end pb-4"><span class="uk-background-muted rounded-lg px-4 py-2 max-w-[70%]">${message}</span></div>`;
+                input.value = ""; // Clear the input after sending
+                contentDiv.scrollTop = contentDiv.scrollHeight;
+
+                input.disabled = true;
+
+                const responseDiv = document.createElement("div");
+                responseDiv.classList.add(
+                    "max-w-[800px]",
+                    "pl-2.5",
+                    "flex",
+                    "w-full",
+                    "justify-start",
+                    "pb-4",
+                );
+                const messageContent = document.createElement("span");
+                messageContent.classList.add(
+                    "uk-background-muted",
+                    "rounded-lg",
+                    "px-4",
+                    "py-2",
+                    "max-w-[70%]",
+                );
+                const spinnerDiv = document.createElement("div");
+                spinnerDiv.setAttribute("uk-spinner", "ratio: .5");
+                messageContent.appendChild(spinnerDiv);
+                responseDiv.appendChild(messageContent);
+                contentDiv.appendChild(responseDiv);
+                contentDiv.scrollTop = contentDiv.scrollHeight;
+
+
+                let responseText = "";
+                {% if streaming %}
+                responseText = await streamChat(
+                    messageContent,
+                    contentDiv,
+                    inputValue,
+                    context,
+                );
+                {% else %}
+                responseText = await fetchChat(messageContent,
+                    contentDiv,
+                    inputValue,
+                    context,
+                );
+                {% endif %}
+
+                context.push({
+                    content: responseText,
+                    role: "assistant",
+                });
+                input.disabled = false;
+                input.focus();
+            });
+
+            document
+                .getElementById("chat-input")
+                .addEventListener("keydown", function (event) {
+                    if (event.key === "Enter" && !event.shiftKey) {
+                        event.preventDefault(); // Prevent the default action to stop from inserting a new line
+                        chatForm.dispatchEvent(new Event("submit")); // Programmatically submit the form
+                    }
+                });
+        </script>
+    </body>
+</html>

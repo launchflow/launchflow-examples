@@ -327,3 +327,9 @@ dist
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+pyrightconfig.json
+
+
+meta-llama-8b-instruct-q4_K_M.gguf
+llama-model.gguf
